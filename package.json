@@ -1,0 +1,15 @@
+{
+  "name": "node-mysql-scheduled-backups",
+  "version": "0.1.0",
+  "description": "scheduled backups for MySQL databases to Google Drive using Later.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Tim Freedman",
+  "license": "ISC",
+  "dependencies": {
+    "later": "^1.2.0",
+    "moment": "^2.18.1"
+  }
+}
