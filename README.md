@@ -1,2 +1,2 @@
-# node-mysql-schedule-backups
+# node-mysql-scheduled-backups
 scheduled backups for MySQL databases to Google Drive using Later.js
