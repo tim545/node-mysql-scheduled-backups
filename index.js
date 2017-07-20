@@ -1,8 +1,40 @@
 import {spawn} from 'child_process';
 import {later} from 'later';
 import * as moment from 'moment';
+import {Dropbox} from 'dropbox';
 
-const interval = later.parse.recur().last().dayOfMonth();
+const dbx = new Dropbox({ accessToken: process.env.dropboxToken });
+const interval = setInterval(process.env.interval);
+
+function setInterval(customInterval) {
+  let recur;
+
+  switch(customInterval) {
+    case 'minute':
+      recur = later.parse.recur().last().secondOfMinute();
+      break;
+    case 'hour':
+      recur = later.parse.recur().last().minuteOfHour();
+      break;
+    case 'day':
+      recur = later.parse.recur().last().hourOfDay();
+      break;
+    case 'week':
+      recur = later.parse.recur().last().dayOfWeek();
+      break;
+    case 'month':
+      recur = later.parse.recur().last().dayOfMonth();
+      break;
+    case 'year':
+      recur = later.parse.recur().last().dayOfYear();
+      break;
+    default:
+      recur = later.parse.recur().last().dayOfWeek();
+      break;
+  }
+
+  return recur;
+};
 
 const mysqlBackup = function() {
   const mysqldump = spawn('mysqldump', [
@@ -14,9 +46,12 @@ const mysqlBackup = function() {
     process.env.dbname
   ]);
 
-  // Google Drive upload
+  // Dropbox upload
   const upload = ()=> {
-    // `-r /tmp/${process.env.dbname}-${moment.utc().format('YYYY-MM-DD')}.sql`
+    dbx.filesUpload({
+      path: `/node-mysql-scheduled-backups/${process.env.dbname}/${process.env.dbname}-${moment.utc().format('YYYY-MM-DD')}.sql`,
+      autorename: true
+    });
   };
 
   return new Promise((resolve, reject)=> {
