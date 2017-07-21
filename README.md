@@ -1,5 +1,5 @@
 # node-mysql-scheduled-backups
-scheduled backups for MySQL databases to Google Drive using Later.js
+scheduled backups for MySQL databases using Later.js
 
 ### Running the container
 
@@ -10,12 +10,12 @@ docker run \
 -e host="" \
 -e port="" \
 -e dbname="" \
--e dropboxToken="" \
 -e interval="" \
+-e saveDir="/tmp" \
 <container-name>
 ```
 
-`docker run backup-test -e port="32770" -e dbname="appmyfocus" -e host="127.0.0.1" -e dropboxToken="" -e interval="minute"`
+`docker run backup-test -e port="32770" -e dbname="appmyfocus" -e host="127.0.0.1" -e interval="minute"`
 
 ### Environment variables
 
@@ -39,14 +39,12 @@ MySQL port number
 
 MySQL database name
 
-**dropboxToken**
-
-Dropbox authentication token. Currently only Dropbox is supported as a storage location, your token can be found in your Dropbox user settings.
-
 **interval**
 
 How often you want to run the backup. Must be a string of one of these options:
 
 "minute", "hour", "day", "week", "month", "year"
 
+**saveDir**
 
+Directory to store the backup files, relative to file system root.

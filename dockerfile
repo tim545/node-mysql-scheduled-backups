@@ -1,14 +1,20 @@
-FROM alpine:3.6
+FROM node:alpine
 RUN apk add --no-cache mysql-client
 
 ENV user root
 ENV pass root
-ENV host localhost
+ENV host 127.0.0.1
 ENV port 3306
 ENV dbname mydb
-
-ENV dropboxToken token
-
 ENV interval="week"
+ENV saveDir="/tmp"
 
-CMD ["node index.js"]
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY package.json /usr/src/app/
+COPY index.js /usr/src/app/
+
+EXPOSE 8080
+
+CMD ["node", "index.js"]

@@ -1,7 +1,7 @@
 {
   "name": "node-mysql-scheduled-backups",
   "version": "0.1.0",
-  "description": "Scheduled backups for MySQL databases to Dropbox using Later.js",
+  "description": "Scheduled backups for MySQL databases using Later.js",
   "main": "index.js",
   "scripts": {
     "test": "test"

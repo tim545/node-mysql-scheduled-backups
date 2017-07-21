@@ -1,9 +1,7 @@
-import {spawn} from 'child_process';
-import {later} from 'later';
-import * as moment from 'moment';
-import {Dropbox} from 'dropbox';
+const {spawn} = require('child_process');
+const later = require('later');
+const {moment} = require('moment');
 
-const dbx = new Dropbox({ accessToken: process.env.dropboxToken });
 const interval = setInterval(process.env.interval);
 
 function setInterval(customInterval) {
@@ -42,22 +40,13 @@ const mysqlBackup = function() {
     `-p${process.env.pass}`
     `-h ${process.env.host}`
     `--port=${process.env.port}`,
-    '-r /tmp/backup.sql',
+    `-r /${process.env.saveDir}/backup.sql`,
     process.env.dbname
   ]);
-
-  // Dropbox upload
-  const upload = ()=> {
-    dbx.filesUpload({
-      path: `/node-mysql-scheduled-backups/${process.env.dbname}/${process.env.dbname}-${moment.utc().format('YYYY-MM-DD')}.sql`,
-      autorename: true
-    });
-  };
 
   return new Promise((resolve, reject)=> {
     mysqldump
       .stdout
-      .pipe(upload)
       .on('finish', ()=> {
         resolve();
       })
