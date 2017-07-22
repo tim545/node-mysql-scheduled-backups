@@ -4,13 +4,13 @@
   "description": "Scheduled backups for MySQL databases using Later.js",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node index.js"
   },
   "author": "Tim Freedman",
   "license": "ISC",
   "dependencies": {
-    "dropbox": "^2.5.5",
-    "later": "^1.2.0",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "node-schedule": "^1.2.3"
   }
 }
