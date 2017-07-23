@@ -24,26 +24,30 @@ const mysqlBackup = function() {
   });
 };
 
-const rule = new schedule.RecurrenceRule();
+const makeRule = function(rule) {
+  switch(process.env.interval) {
+    case 'minute':
+    case 'min':
+      rule.minute = 0;
+      break;
+    case 'hour':
+      rule.hour = 0;
+      break;
+    case 'day':
+      rule.day = 0;
+      break;
+    case 'week':
+      // TBD
+      break;
+    default:
+      rule.hour = 0;
+      break;
+  }
 
-switch(process.env.interval) {
-  case 'minute':
-  case 'min':
-    rule.minute = 0;
-    break;
-  case 'hour':
-    rule.hour = 0;
-    break;
-  case 'day':
-    rule.day = 0;
-    break;
-  case 'week':
-    // TBD
-    break;
-  default:
-    rule.hour = 0;
-    break;
-}
+  return rule;
+};
+
+const rule = makeRule(new schedule.RecurrenceRule());
 
 const job = schedule.scheduleJob(rule, function() {
   console.log(`backup completed at ${process.env.moment.utc().format()} for ${process.env.dbname}`);
