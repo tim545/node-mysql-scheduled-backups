@@ -15,7 +15,9 @@ docker run \
 <container-name>
 ```
 
-`docker run backup-test -e port="32770" -e dbname="appmyfocus" -e host="127.0.0.1" -e interval="minute"`
+Run a backup for `myDB` every minute:
+
+`docker run -d --name mysql-backup-amf -e dbname="myDB" -e interval="min" mysql-backup`
 
 ### Environment variables
 

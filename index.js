@@ -28,19 +28,20 @@ const makeRule = function(rule) {
   switch(process.env.interval) {
     case 'minute':
     case 'min':
-      rule.minute = 0;
+      rule.second = 0;
       break;
     case 'hour':
-      rule.hour = 0;
+      rule.minute = 0;
       break;
     case 'day':
-      rule.day = 0;
+      rule.hour = 0;
       break;
     case 'week':
-      // TBD
+      rule.dayOfWeek = 0;
       break;
     default:
-      rule.hour = 0;
+      // Every hour
+      rule.minute = 0;
       break;
   }
 
@@ -50,5 +51,11 @@ const makeRule = function(rule) {
 const rule = makeRule(new schedule.RecurrenceRule());
 
 const job = schedule.scheduleJob(rule, function() {
-  console.log(`backup completed at ${process.env.moment.utc().format()} for ${process.env.dbname}`);
+  mysqlBackup()
+    .then(() => {
+      console.log(`backup completed at ${process.env.moment.utc().format()} for ${process.env.dbname}`);
+    })
+    .error(() => {
+      console.error(`backup failed at ${process.env.moment.utc().format()} for ${process.env.dbname}`);
+    });
 });
